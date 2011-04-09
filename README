@@ -1,0 +1,9 @@
+/places?where[name]=Melbour*
+/places?where[contains_point]=-34.928621,138.599959
+/places?limit=100&offset=5000
+/places?select=id,name
+
+/pois?where[name]=Eiff*
+/pois?where[contained_in]=-37.751701,-37.871201,145.014008,144.871994
+/pois?where[close_to]=-34.928621,138.599959,500
+/pois?where[close_to]=-34.928621,138.599959,500&detailed=true&limit=100
