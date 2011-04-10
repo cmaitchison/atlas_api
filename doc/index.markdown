@@ -50,9 +50,9 @@ Why is it faster?
 ===============
 * It is implemented only in JSON. XML should be considered for deprecation in the existing API.
 * It is implemented in Ruby 1.9.2 and Rails 3.0.6, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2
-* The database it uses for its backend is a denormalized version of the existing Atlas data.  There are two tables: pois & places.
+* The database it uses for its backend is a denormalized version of the existing Atlas data.  
 * The JSON returned has all whitespace removed, making it less human readable but much smaller and faster.
-* It focusses on doing only one thing.
+* It strives to be as simple as possible. There are two tables (pois & places), two controllers (pois & places), and 3 model classes (Poi, Place and LatLong for the funky LatLong math). Along with an index.markdown, that's it.
 
 Extra Features/Changes
 ======================
