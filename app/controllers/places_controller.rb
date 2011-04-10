@@ -12,7 +12,7 @@ class PlacesController < ApplicationController
   def build_place_scope
     limit = params[:limit] || 1000
     @places = Place.limit(limit)
-    
+    @places = @places.order(:ancestry_names)
     @places = @places.offset(params[:offset]) if params[:offset] 
     
     set_selected_fields
