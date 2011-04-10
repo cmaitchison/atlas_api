@@ -15,6 +15,7 @@ class PoisController < ApplicationController
     filter_by_place
     filter_by_contained_in
     filter_by_close_to
+    filter_by_type
   end
 
   def set_detailed_fields
@@ -29,7 +30,13 @@ class PoisController < ApplicationController
      @pois = @pois.select(selected_fields) if selected_fields
      @pois = @pois.select("id")
   end
-   
+  
+  def filter_by_type
+    type = where_param :type
+    return unless type
+    @pois = @pois.where("lower(type) = ?", type.downcase)
+  end   
+  
   def filter_by_close_to
     lat, long, distance = param_close_to
     return unless lat && long && distance
