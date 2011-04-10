@@ -3,6 +3,7 @@ class LatLong
   
   def move bearing, distance
     radius = 6371.0
+    distance = distance.to_f * 1.5 # Should actually be sqrt(2), but no need to be so precise.
     d = distance.to_f/radius  # d = angular distance covered on earths surface
     lat1 = to_rad @lat
     lon1 = to_rad @long
