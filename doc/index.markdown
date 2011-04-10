@@ -79,7 +79,7 @@ Places API
 
 #### Options
 
-* Exact name match: [where\[name\]=Elbonia](/places?where[name]=Elbow%20Cay)
+* Exact name match: [where\[name\]=Elbow Cay](/places?where[name]=Elbow%20Cay)
 * Pattern name match: [where\[name\]=Elb\*](/places?where[name]=Elb*)
 * Limit response to 10 results: [limit=10](/places?limit=10)
 * Skip the first 20 results: [offset=20](/places?offset=20)
