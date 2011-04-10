@@ -1,6 +1,6 @@
 <h1>The FastAtlas API</h1>
 
-<p>This is an implementation of the Atlas API that is tuned for performance. If it was hosted on local servers, nearly all responses would be sub-second.  It is currently hosted on Heroku, meaning most responses are served in 1-2 seconds.</p>
+<p>This is an implementation of the Atlas API that is tuned for read performance. If it was hosted on local servers, nearly all responses would be sub-second.  It is currently hosted on Heroku, meaning most responses are served in 1-2 seconds.</p>
 
 <h1>What can it do?</h1>
 
@@ -87,7 +87,7 @@ FastAtlas: 3-5 seconds</p>
 <h4>Options</h4>
 
 <ul>
-<li>Exact name match: <a href="/places?where[name]=Elbonia">where[name]=Elbonia</a></li>
+<li>Exact name match: <a href="/places?where[name]=Elbow%20Cay">where[name]=Elbonia</a></li>
 <li>Pattern name match: <a href="/places?where[name]=Elb*">where[name]=Elb*</a></li>
 <li>Limit response to 10 results: <a href="/places?limit=10">limit=10</a></li>
 <li>Skip the first 20 results: <a href="/places?offset=20">offset=20</a></li>
@@ -107,14 +107,14 @@ FastAtlas: 3-5 seconds</p>
 <h4>Options</h4>
 
 <ul>
-<li>Exact name match: <a href="/pois/where[name]=Eiffel%20Tower">where[name]=Eiffel Tower</a></li>
+<li>Exact name match: <a href="/pois?where[name]=Eiffel%20Tower">where[name]=Eiffel Tower</a></li>
 <li>Pattern name match: <a href="/pois?where[name]=Eif*">where[name]=Eif*</a></li>
 <li>Limit response to 10 results: <a href="/pois?limit=10">limit=10</a></li>
 <li>Skip the first 20 results: <a href="/pois?offset=20">offset=20</a></li>
 <li>Find all POIs in a place <a href="/pois?where[place]=362494">where[place]=362494</a></li>
 <li>Bounding box: <a href="/pois?where[bounding_box]=50,40,20,-20">where[contained_in]=n,s,e,w</a></li>
 <li>Poi Type (Eat | Sleep | Night | See | Shop | Do | General | Go): <a href="/pois?where[type]=Eat">where[type]=Eat</a></li>
-<li>Full detail. Default is summary: <a href="/pois?limit=10&amp;detail=full">detailed=true</a></li>
+<li>Full detail. Default is summary: <a href="/pois?limit=10&amp;detailed=true">detailed=true</a></li>
 <li>Within a certain number of metres to a point: <a href="/pois?where[close_to]=-37.821836,144.960029,1000">where[close_to]=lat,long,metres</a></li>
 <li>If geocoded (has lat/long): <a href="pois?where[geocoded]=false">where[geocoded]=true/false</a></li>
 </ul>

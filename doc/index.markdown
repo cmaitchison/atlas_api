@@ -1,7 +1,7 @@
 The FastAtlas API
 ==================
 
-This is an implementation of the Atlas API that is tuned for performance. If it was hosted on local servers, nearly all responses would be sub-second.  It is currently hosted on Heroku, meaning most responses are served in 1-2 seconds.
+This is an implementation of the Atlas API that is tuned for read performance. If it was hosted on local servers, nearly all responses would be sub-second.  It is currently hosted on Heroku, meaning most responses are served in 1-2 seconds.
 
 What can it do?
 ==================================
@@ -79,7 +79,7 @@ Places API
 
 #### Options
 
-* Exact name match: [where\[name\]=Elbonia](/places?where[name]=Elbonia)
+* Exact name match: [where\[name\]=Elbonia](/places?where[name]=Elbow%20Cay)
 * Pattern name match: [where\[name\]=Elb\*](/places?where[name]=Elb*)
 * Limit response to 10 results: [limit=10](/places?limit=10)
 * Skip the first 20 results: [offset=20](/places?offset=20)
@@ -96,13 +96,13 @@ POIs API
     
 #### Options
 
-* Exact name match: [where\[name\]=Eiffel Tower](/pois/where[name]=Eiffel%20Tower)
+* Exact name match: [where\[name\]=Eiffel Tower](/pois?where[name]=Eiffel%20Tower)
 * Pattern name match: [where\[name\]=Eif\*](/pois?where[name]=Eif*)
 * Limit response to 10 results: [limit=10](/pois?limit=10)
 * Skip the first 20 results: [offset=20](/pois?offset=20)
 * Find all POIs in a place [where\[place\]=362494](/pois?where[place]=362494)
 * Bounding box: [where\[contained\_in\]=n,s,e,w](/pois?where[bounding_box]=50,40,20,-20)
 * Poi Type (Eat | Sleep | Night | See | Shop | Do | General | Go): [where\[type\]=Eat](/pois?where[type]=Eat)
-* Full detail. Default is summary: [detailed=true](/pois?limit=10&detail=full)
+* Full detail. Default is summary: [detailed=true](/pois?limit=10&detailed=true)
 * Within a certain number of metres to a point: [where\[close\_to\]=lat,long,metres](/pois?where[close_to]=-37.821836,144.960029,1000)
 * If geocoded (has lat/long): [where\[geocoded\]=true/false](pois?where[geocoded]=false)
