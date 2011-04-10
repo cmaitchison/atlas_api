@@ -52,8 +52,8 @@ class PlacesController < ApplicationController
   end
   
   def param_contains_point
-     return nil unless params[:contains_point]
-     point = params[:contains_point].split(",")
+     return nil unless where_param :contains_point
+     point = where_param(:contains_point).split(",")
      return nil unless point.length == 2
      lat = point[0]
      long =point[1]
