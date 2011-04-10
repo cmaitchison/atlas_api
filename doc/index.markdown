@@ -52,7 +52,7 @@ Why is it faster?
 * It is implemented in Ruby 1.9.2 and Rails 3.0.6, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2
 * The database it uses for its backend is a denormalized version of the existing Atlas data.  
 * The JSON returned has all whitespace removed, making it less human readable but much smaller and faster.
-* It strives to be as simple as possible. There are two tables (pois & places), two controllers (pois & places), and 3 model classes (Poi, Place and LatLong for the funky LatLong math). Along with an index.markdown, that's it.
+* It strives to be as simple as possible. There are two tables (pois & places), two controllers (pois & places), and 3 model classes (Poi, Place and LatLong for the funky LatLong math). Along with this page, that's it.
 
 Extra Features/Changes
 ======================
