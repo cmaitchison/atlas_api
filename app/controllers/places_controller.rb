@@ -5,7 +5,6 @@ class PlacesController < ApplicationController
   DEFAULT_LIMIT = 1000
   
   def index
-    Rails.logger.info params
     build_place_scope
     render :json => @places
   end
@@ -20,6 +19,7 @@ class PlacesController < ApplicationController
     filter_by_name
     filter_by_parent
     filter_by_lat_long
+    filter_by_id
   end
   
   def set_selected_fields
@@ -27,6 +27,11 @@ class PlacesController < ApplicationController
     selected_fields = params[:select].split(",") 
     @places = @places.select(selected_fields) if selected_fields
     @places = @places.select("id")
+  end
+  
+  def filter_by_id
+    id = where_param :id
+    @places = @places.where("id = ?", id.to_i) if id
   end
   
   def filter_by_name
