@@ -16,6 +16,7 @@ class PoisController < ApplicationController
     filter_by_contained_in
     filter_by_close_to
     filter_by_type
+    filter_by_geocoded
   end
 
   def set_detailed_fields
@@ -29,6 +30,17 @@ class PoisController < ApplicationController
      selected_fields = params[:select].split(",") 
      @pois = @pois.select(selected_fields) if selected_fields
      @pois = @pois.select("id")
+  end
+  
+  def filter_by_geocoded
+    geocoded = where_param :geocoded
+    return unless geocoded
+    is_geocoded = (geocoded.downcase == 'true')
+    if is_geocoded
+      @pois = @pois.where('latitude is not null AND longitude is not null')
+    else
+      @pois = @pois.where('latitude is null OR longitude is null')
+    end
   end
   
   def filter_by_type
