@@ -1,7 +1,121 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Fast ATLAS API</title>
-    <h1>It is fast :)</h1>
-  </body>
-</html>
+<h1>The FastAtlas API</h1>
+
+<p>This is an implementation of the Atlas API that is tuned for performance. If it was hosted on local servers, nearly all responses would be sub-second.  It is currently hosted on Heroku, meaning most responses are served in 1-2 seconds.</p>
+
+<h1>What can it do?</h1>
+
+<p><strong>Give me all restaurants within 1km of Southbank</strong><br/>
+<a href="/pois?where[close_to]=-37.821836,144.960029,1000&amp;where[type]=eat">pois?where[close_to]=-37.821836,144.960029,1000&amp;where[type]=eat</a><br/>
+Atlas: Not implemented<br/>
+FastAtlas: 1-2 seconds</p>
+
+<p><strong>Give me just the name and id of all Italy POIs that aren't geocoded</strong><br/>
+<a href="/pois?select=name&amp;where[place]=359845&amp;where[geocoded]=false">pois?select=name&amp;where[place]=359845&amp;where[geocoded]=false</a><br/>
+Atlas: Not implemented<br/>
+FastAtlas: 1-2 seconds</p>
+
+<p><strong>Give me all places that contain the lat long of Eiffel Tower</strong><br/>
+<a href="/places?where[contains_point]=48.8582493546056,2.2945117950440">places?where[contains_point]=48.8582493546056,2.294511795044</a><br/>
+Atlas: Not implemented<br/>
+FastAtlas: 1 second</p>
+
+<p><strong>Give me 1000 places</strong><br/>
+<a href="/places?limit=1000">places?limit=1000</a><br/>
+Atlas: 30-40 seconds<br/>
+FastAtlas: 1-2 seconds</p>
+
+<p><strong>Give me 1000 POIs in Australia</strong><br/>
+<a href="/pois?where[place]=362249&amp;limit=1000">pois?where[place]=362249&amp;limit=1000</a><br/>
+Atlas: 30-40 seconds<br/>
+FastAtlas: 1-2 seconds</p>
+
+<p><strong>Give me only the names and ids of ALL the POIs in Australia</strong><br/>
+<a href="/pois?select=name&amp;where[place]=362249&amp;limit=12000">pois?select=name&amp;where[place]=362249&amp;limit=12000</a><br/>
+Atlas: 12 pages of 1000 POIs takes around 6-8 minutes<br/>
+FastAtlas: 2-3 seconds</p>
+
+<p><strong>Give me all POIs in a bounding box</strong><br/>
+<a href="/pois?where[contained_in]=38.079598,37.479598,-122.120143,-122.720143">pois?where[contained_in]=38.079598,37.479598,-122.120143,-122.720143</a><br/>
+Atlas: 20-25 seconds<br/>
+FastAtlas: 1-2 seconds</p>
+
+<p><strong>Get 1000 POIs in a place, with reviews</strong><br/>
+<a href="/pois?where[place]=362494&amp;limit=1000&amp;detailed=true">pois?where[place]=362494&amp;limit=1000&amp;detailed=true</a><br/>
+Atlas: 40-50 seconds<br/>
+FastAtlas: 3-5 seconds</p>
+
+<h1>Why is it faster?</h1>
+
+<ul>
+<li>It is implemented only in JSON. XML should be considered for deprecation in the existing API.</li>
+<li>It is implemented in Ruby 1.9.2 and Rails 3.0.6, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2</li>
+<li>The database it uses for its backend is a denormalized version of the existing Atlas data.  There are two tables: pois &amp; places.</li>
+<li>The JSON returned has all whitespace removed, making it less human readable but much smaller and faster.</li>
+<li>It focusses on doing only one thing.</li>
+</ul>
+
+
+<h1>Extra Features/Changes</h1>
+
+<ul>
+<li>"<strong>Show me all POIs within a certain distance of a place</strong>" - so you can find all restaurants within 1km of Southbank</li>
+<li>"<strong>Let me choose the fields I want returned</strong>" - you might want 'name' but not 'etyhl_id', so you can omit ethyl_id to improve performance more.</li>
+<li>"<strong>Show me all places that contain this point</strong>" - give a lat/long and you can find out all places that contain that point</li>
+<li>Getting all POIs for a place now uses <code>pois/where[place]=1006242</code> instead of <code>places/1006242/pois</code></li>
+<li>If a field is null, then it is not returned in the JSON.  So if a field is not returned, you can be sure it is null.  This is to reduce response size.</li>
+</ul>
+
+
+<h1>Missing Features</h1>
+
+<ul>
+<li>No search for POIs by ISBN. To get this data denormalised was going to take longer than a weekend.</li>
+<li>No posting data.  The data is read-only.</li>
+<li>No support for multiple languages</li>
+<li>No versioning (draft/published).  The latest version (in its default language) of each POI/Place in Atlas was used to seed the database.</li>
+<li>No tests. No good error handling.  Bit of a hack really.</li>
+</ul>
+
+
+<h1>Places API</h1>
+
+<h3>List places</h3>
+
+<pre><code>GET /places
+</code></pre>
+
+<h4>Options</h4>
+
+<ul>
+<li>Exact name match: <a href="/places?where[name]=Elbonia">where[name]=Elbonia</a></li>
+<li>Pattern name match: <a href="/places?where[name]=Elb*">where[name]=Elb*</a></li>
+<li>Limit response to 10 results: <a href="/places?limit=10">limit=10</a></li>
+<li>Skip the first 20 results: <a href="/places?offset=20">offset=20</a></li>
+<li>By id: <a href="/places?where[id]=362494">where[id]=362494</a></li>
+<li>By parent: <a href="/places?where[parent]=362494">where[parent]=362494</a></li>
+<li>Contains point: <a href="/places?where[contains_point]=48.8582493546056,2.294511795044">where[contains_point]=lat,long</a></li>
+</ul>
+
+
+<h1>POIs API</h1>
+
+<h3>List POIs</h3>
+
+<pre><code>GET /pois
+</code></pre>
+
+<h4>Options</h4>
+
+<ul>
+<li>Exact name match: <a href="/pois/where[name]=Eiffel%20Tower">where[name]=Eiffel Tower</a></li>
+<li>Pattern name match: <a href="/pois?where[name]=Eif*">where[name]=Eif*</a></li>
+<li>Limit response to 10 results: <a href="/pois?limit=10">limit=10</a></li>
+<li>Skip the first 20 results: <a href="/pois?offset=20">offset=20</a></li>
+<li>Find all POIs in a place <a href="/pois?where[place]=362494">where[place]=362494</a></li>
+<li>Bounding box: <a href="/pois?where[bounding_box]=50,40,20,-20">where[contained_in]=n,s,e,w</a></li>
+<li>Poi Type (Eat | Sleep | Night | See | Shop | Do | General | Go): <a href="/pois?where[type]=Eat">where[type]=Eat</a></li>
+<li>Full detail. Default is summary: <a href="/pois?limit=10&amp;detail=full">detailed=true</a></li>
+<li>Within a certain number of metres to a point: <a href="/pois?where[close_to]=-37.821836,144.960029,1000">where[close_to]=lat,long,metres</a></li>
+<li>If geocoded (has lat/long): <a href="pois?where[geocoded]=false">where[geocoded]=true/false</a></li>
+</ul>
+
