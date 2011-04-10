@@ -9,7 +9,7 @@ class PoisController < ApplicationController
   def build_pois_scope
     limit = params[:limit] || 1000
     @pois = Poi.limit(limit)
-    @pois = @pois.order(:place_ancestry_names)
+    @pois = @pois.order(:id)
     @pois = @pois.offset(params[:offset]) if params[:offset] 
     
     set_selected_fields || set_detailed_fields   
