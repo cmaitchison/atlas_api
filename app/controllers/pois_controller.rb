@@ -1,13 +1,12 @@
 class PoisController < ApplicationController
   
   def index
-    json = Rails.cache.read("pois"+params.to_s)
-    if json.nil?
+    cache_key = "pois"+params.to_s
+    json = Rails.cache.fetch cache_key do
       build_pois_scope
-      json = @pois.to_json
-      Rails.cache.write "pois"+params.to_s, json
+      @pois.to_json
     end
-     render :json => json
+    render :json => json
   end
    
   def build_pois_scope
@@ -32,10 +31,10 @@ class PoisController < ApplicationController
   end
   
   def set_selected_fields
-     return unless params["select"]
-     selected_fields = params[:select].split(",") 
-     @pois = @pois.select(selected_fields) if selected_fields
-     @pois = @pois.select("id")
+    return unless params["select"]
+    selected_fields = params[:select].split(",") 
+    @pois = @pois.select(selected_fields) if selected_fields
+    @pois = @pois.select("id")
   end
   
   def filter_by_geocoded
@@ -87,18 +86,18 @@ class PoisController < ApplicationController
   end
   
   def param_contained_in
-      return nil unless where_param :contained_in
-      box = where_param(:contained_in).split(",")
-      return nil unless box.length == 4
-      north = box[0].to_f
-      south = box[1].to_f
-      east = box[2].to_f
-      west = box[3].to_f
-      [north, south, east, west]
+    return nil unless where_param :contained_in
+    box = where_param(:contained_in).split(",")
+    return nil unless box.length == 4
+    north = box[0].to_f
+    south = box[1].to_f
+    east = box[2].to_f
+    west = box[3].to_f
+    [north, south, east, west]
    end
    
    def param_close_to
-       return nil unless where_param :close_to
-       where_param(:close_to).split(",")
-    end
+     return nil unless where_param :close_to
+     where_param(:close_to).split(",")
+   end
 end

@@ -5,13 +5,12 @@ class PlacesController < ApplicationController
   DEFAULT_LIMIT = 1000
   
   def index
-     json = Rails.cache.read("places"+params.to_s)
-      if json.nil?
-        build_places_scope
-        json = @places.to_json
-        Rails.cache.write "places"+params.to_s, json
-      end
-       render :json => json
+    cache_key = "places"+params.to_s
+    json = Rails.cache.fetch cache_key do
+      build_places_scope
+      @places.to_json
+    end
+    render :json => json
   end
 
   def build_places_scope
@@ -62,11 +61,11 @@ class PlacesController < ApplicationController
   end
   
   def param_contains_point
-     return nil unless where_param :contains_point
-     point = where_param(:contains_point).split(",")
-     return nil unless point.length == 2
-     lat = point[0]
-     long =point[1]
-     [lat.to_f,long.to_f]
+    return nil unless where_param :contains_point
+    point = where_param(:contains_point).split(",")
+    return nil unless point.length == 2
+    lat = point[0]
+    long =point[1]
+    [lat.to_f,long.to_f]
   end
 end
