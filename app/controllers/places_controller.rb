@@ -5,11 +5,14 @@ class PlacesController < ApplicationController
   DEFAULT_LIMIT = 1000
   
   def index
-      build_place_scope
-      render :json => @places
+     @places = cache(params) do
+       build_places_scope
+       @places
+     end
+     render :json => @places
   end
 
-  def build_place_scope
+  def build_places_scope
     limit = params[:limit] || 1000
     @places = Place.limit(limit)
     @places = @places.order(:ancestry_names)
