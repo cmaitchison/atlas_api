@@ -1,10 +1,7 @@
 class PoisController < ApplicationController
   
   def index
-    @pois = cache(params) do
-      build_pois_scope
-      @pois
-    end
+     build_pois_scope
      render :json => @pois
   end
    

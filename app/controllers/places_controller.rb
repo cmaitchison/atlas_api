@@ -5,10 +5,7 @@ class PlacesController < ApplicationController
   DEFAULT_LIMIT = 1000
   
   def index
-     @places = cache(params) do
-       build_places_scope
-       @places
-     end
+     build_places_scope
      render :json => @places
   end
 
