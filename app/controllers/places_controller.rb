@@ -5,8 +5,13 @@ class PlacesController < ApplicationController
   DEFAULT_LIMIT = 1000
   
   def index
-     build_places_scope
-     render :json => @places
+     json = Rails.cache.read("places"+params.to_s)
+      if json.nil?
+        build_places_scope
+        json = @places.to_json
+        Rails.cache.write "places"+params.to_s, json
+      end
+       render :json => json
   end
 
   def build_places_scope

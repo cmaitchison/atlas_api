@@ -1,8 +1,13 @@
 class PoisController < ApplicationController
   
   def index
-     build_pois_scope
-     render :json => @pois
+    json = Rails.cache.read("pois"+params.to_s)
+    if json.nil?
+      build_pois_scope
+      json = @pois.to_json
+      Rails.cache.write "pois"+params.to_s, json
+    end
+     render :json => json
   end
    
   def build_pois_scope
