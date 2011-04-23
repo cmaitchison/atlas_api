@@ -1,0 +1,36 @@
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:pitti/postgresql
+sudo apt-get update
+sudo apt-get install curl build-essential clang zlib1g-dev libssl-dev libreadline5-dev postgresql-9.0 postgresql-server-dev-9.0 git
+
+cd /fusion
+mkdir cache
+ln -s /fusion/cache /tmp/cache
+
+mkdir -p /fusion/apps
+cd /fusion/apps
+git clone git://github.com/cmaitchison/fastatlasapi.git
+
+mkdir -p /fusion/data/postgresql
+sudo /etc/init.d/postgresql stop
+mv /var/lib/postgresql/9.0/main/ /fusion/data/postgresql
+sudo cp /fusion/apps/fastatlasapi/deployment/pg_hba.conf etc/postgresql/9.0/main/pg_hba.conf
+sudo cp /fusion/apps/fastatlasapi/deployment/postgresql.conf etc/postgresql/9.0/main/postgresql.conf
+sudo chown -R postgres:postgres etc/postgresql/
+sudo /etc/init.d/postgresql start
+
+#pg_dump -f fastatlas.dump -b -c -h localhost -p 5432 -v -U cmaitchison lp_api_dev
+#scp the dump
+psql -d lp_api_dev -a -f fastatlas.dump
+
+bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
+echo "source /home/chrisa/.bashrc" >> /home/chrisa/.bash_profile
+source /home/chrisa/.bashrc
+rvm install 1.9.2
+rvm --default 1.9.2
+gem install bundler
+
+cd /fusion/apps/fastatlasapi
+bundle install
+
+RAILS_ENV=production rails server
