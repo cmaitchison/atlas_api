@@ -17,4 +17,7 @@ cucumber:
   <<: *TEST
 
 production:
-  <<: *DEVELOPMENT
+  adapter:  postgresql
+  host:     localhost
+  database: lp_api_dev
+  username: postgres
