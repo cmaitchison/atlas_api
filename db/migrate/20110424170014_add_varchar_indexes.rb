@@ -1,4 +1,4 @@
-class MissingIndexes < ActiveRecord::Migration
+class AddVarcharIndexes < ActiveRecord::Migration
   def self.up
     begin
       remove_index "pois", :name => "index_pois_on_place_ancestry_ids"
