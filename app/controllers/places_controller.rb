@@ -2,8 +2,6 @@ class PlacesController < ApplicationController
   ActiveRecord::Base.include_root_in_json = false
   respond_to :json
   
-  DEFAULT_LIMIT = 1000
-  
   def index
     build_places_scope
     render :json => json_response
@@ -23,7 +21,7 @@ class PlacesController < ApplicationController
   end
   
   def build_places_scope
-    limit = params[:limit] || DEFAULT_LIMIT
+    limit = params[:limit] || 1000
     @places = Place.limit(limit)
     @places = @places.order(:ancestry_names)
     @places = @places.offset(params[:offset]) if params[:offset] 

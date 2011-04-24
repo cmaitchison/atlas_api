@@ -31,8 +31,14 @@ class PoisController < ApplicationController
     filter_by_close_to
     filter_by_type
     filter_by_geocoded
+    filter_by_id
   end
 
+  def filter_by_id
+    id = where_param :id
+    @pois = @pois.where("id = ?", id.to_i) if id
+  end
+  
   def set_detailed_fields
     default_fields=[:id,:name, :ethyl_id, :feature_id, :type, :latitude, :longitude, :alt_name, :subtype, :place_ancestry_names, :place_ancestry_ids]
     return if param_detailed
