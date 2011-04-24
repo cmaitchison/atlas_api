@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110409162022) do
+ActiveRecord::Schema.define(:version => 20110424170014) do
 
   create_table "places", :force => true do |t|
     t.string  "name"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20110409162022) do
   add_index "pois", ["latitude"], :name => "index_pois_on_latitude"
   add_index "pois", ["longitude"], :name => "index_pois_on_longitude"
   add_index "pois", ["place_ancestry_ids"], :name => "index_pois_on_place_ancestry_ids"
+  add_index "pois", ["place_ancestry_ids"], :name => "test_index"
   add_index "pois", ["place_ancestry_names"], :name => "index_pois_on_place_ancestry_names"
   add_index "pois", ["searchable_name"], :name => "index_pois_on_searchable_name"
   add_index "pois", ["type"], :name => "index_pois_on_type"
