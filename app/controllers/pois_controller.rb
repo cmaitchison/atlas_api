@@ -1,14 +1,23 @@
 class PoisController < ApplicationController
   
   def index
-    cache_key = "pois"+params.to_s
-    json = Rails.cache.fetch cache_key do
-      build_pois_scope
-      @pois.to_json
-    end
-    render :json => json
+    build_pois_scope
+    render :json => json_response
   end
-   
+  
+  def json_response
+    response_json = "{ \"pois\" :["
+    poi_jsons=[]
+    @pois.each do |poi|
+      poi_json = Rails.cache.fetch poi do
+        poi.to_json
+      end
+      poi_jsons << poi_json
+    end
+    response_json += poi_jsons.join ","
+    response_json += "]}"
+  end
+  
   def build_pois_scope
     limit = params[:limit] || 1000
     @pois = Poi.limit(limit)

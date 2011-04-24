@@ -1,7 +1,6 @@
 LpApi::Application.configure do
   
   config.cache_classes = true
-  config.action_controller.perform_caching = true
   
   config.consider_all_requests_local       = false
 
@@ -12,7 +11,6 @@ LpApi::Application.configure do
 
   # Use a different cache store in production
   config.cache_store = :file_store, "/tmp/cache"
-  config.action_controller.cache_store = :file_store, "/tmp/cache"
 
   config.serve_static_assets = true
 
