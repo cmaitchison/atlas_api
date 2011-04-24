@@ -31,24 +31,5 @@ class Place < ActiveRecord::Base
   def parent
     Place.find_by_id(parent_id)
   end
-  
-  def as_json(options = nil)
-    hash = {'id' => id}
-    add_field hash, :name
-    add_field hash, :full_name
-    add_field hash, :ethyl_id
-    add_field hash, :iso_3166_1
-    add_field hash, :woeid
-    add_field hash, :ethyl_id
-    add_field hash, :iso_3166_1
-    add_field hash, :woeid
-    add_field hash, :parent_id
-    add_field hash, :north
-    add_field hash, :south
-    add_field hash, :east
-    add_field hash, :west
-    hash = { self.class.model_name.element => hash } if include_root_in_json
-    hash
-  end
-  
+
 end

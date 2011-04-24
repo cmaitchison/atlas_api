@@ -1,36 +1,37 @@
 class PlacesController < ApplicationController
-  
+  ActiveRecord::Base.include_root_in_json = false
   respond_to :json
   
   DEFAULT_LIMIT = 1000
   
   def index
-    cache_key = "places"+params.to_s
-    json = Rails.cache.fetch cache_key do
-      build_places_scope
-      @places.to_json
-    end
-    render :json => json
+    build_places_scope
+    render :json => json_response
   end
 
+  def json_response
+    response_json = "{ \"places\" :["
+    place_jsons=[]
+    @places.each do |place|
+      place_json = Rails.cache.fetch place do
+        place.to_json
+      end
+      place_jsons << place_json
+    end
+    response_json += place_jsons.join ","
+    response_json += "]}"
+  end
+  
   def build_places_scope
-    limit = params[:limit] || 1000
+    limit = params[:limit] || DEFAULT_LIMIT
     @places = Place.limit(limit)
     @places = @places.order(:ancestry_names)
     @places = @places.offset(params[:offset]) if params[:offset] 
     
-    set_selected_fields
     filter_by_name
     filter_by_parent
     filter_by_lat_long
     filter_by_id
-  end
-  
-  def set_selected_fields
-    return unless params["select"]
-    selected_fields = params[:select].split(",") 
-    @places = @places.select(selected_fields) if selected_fields
-    @places = @places.select("id")
   end
   
   def filter_by_id
