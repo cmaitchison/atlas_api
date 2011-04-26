@@ -12,6 +12,7 @@ class PlacesController < ApplicationController
     place_jsons=[]
     @places.each do |place|
       place_json = Rails.cache.fetch place do
+        place.reload
         place.to_json
       end
       place_jsons << place_json
@@ -23,6 +24,7 @@ class PlacesController < ApplicationController
   def build_places_scope
     limit = params[:limit] || 1000
     @places = Place.limit(limit)
+    @places = @places.select(:id)
     @places = @places.order(:ancestry_names)
     @places = @places.offset(params[:offset]) if params[:offset] 
     

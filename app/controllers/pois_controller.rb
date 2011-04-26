@@ -1,16 +1,27 @@
 class PoisController < ApplicationController
   
   def index
+    @timer = Time.now
     build_pois_scope
     render :json => json_response
   end
+  
+  
   
   def json_response
     response_json = "{ \"pois\" :["
     poi_jsons=[]
     @pois.each do |poi|
       poi_json = Rails.cache.fetch poi do
-        poi.to_json
+        poi.reload
+        poi.to_json(
+          :include => {
+            :addresses => {:except => [:id,:poi_id]},
+            :practicalities => {:except => [:id,:poi_id]},
+            :reviews => {:except => [:id,:poi_id]}, 
+            :telephones => {:except => [:id,:poi_id]},
+            :properties =>{:only => [:click_to_dial, :text]}}
+        )
       end
       poi_jsons << poi_json
     end
@@ -21,9 +32,9 @@ class PoisController < ApplicationController
   def build_pois_scope
     limit = params[:limit] || 1000
     @pois = Poi.limit(limit)
+    @pois = @pois.order(:id)
     @pois = @pois.offset(params[:offset]) if params[:offset] 
-    
-    set_selected_fields || set_detailed_fields   
+    @pois = @pois.select(:id)
     filter_by_name
     filter_by_place
     filter_by_contained_in
@@ -36,19 +47,6 @@ class PoisController < ApplicationController
   def filter_by_id
     id = where_param :id
     @pois = @pois.where("id = ?", id.to_i) if id
-  end
-  
-  def set_detailed_fields
-    default_fields=[:id,:name, :ethyl_id, :feature_id, :type, :latitude, :longitude, :alt_name, :subtype, :place_ancestry_names, :place_ancestry_ids]
-    return if param_detailed
-    @pois = @pois.select(default_fields) 
-  end
-  
-  def set_selected_fields
-    return unless params["select"]
-    selected_fields = params[:select].split(",") 
-    @pois = @pois.select(selected_fields) if selected_fields
-    @pois = @pois.select("id")
   end
   
   def filter_by_geocoded

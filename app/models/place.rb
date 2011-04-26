@@ -1,5 +1,4 @@
 class Place < ActiveRecord::Base
-  include Jsonnable
   
   before_save :refresh_ancestry
   

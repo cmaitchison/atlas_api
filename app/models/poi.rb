@@ -1,6 +1,12 @@
 class Poi < ActiveRecord::Base
-  include Jsonnable
+  
   belongs_to :place
+  has_many :addresses
+  has_many :telephones
+  has_many :properties
+  has_many :reviews
+  has_many :practicalities
+  
   before_save :refresh_ancestry
   
   set_inheritance_column :sti_type
