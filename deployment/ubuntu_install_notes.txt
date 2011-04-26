@@ -2,7 +2,7 @@
 sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:pitti/postgresql
 sudo apt-get update
-sudo apt-get install curl build-essential clang zlib1g-dev libssl-dev libreadline5-dev postgresql-9.0 postgresql-server-dev-9.0 git
+sudo apt-get install curl build-essential clang zlib1g-dev libssl-dev libreadline5-dev postgresql-9.0 postgresql-server-dev-9.0 git apache2
 
 #Setup Rails disk cache
 cd /fusion
