@@ -6,8 +6,6 @@ class PoisController < ApplicationController
     render :json => json_response
   end
   
-  
-  
   def json_response
     response_json = "{ \"pois\" :["
     poi_jsons=[]
@@ -19,8 +17,8 @@ class PoisController < ApplicationController
             :addresses => {:except => [:id,:poi_id]},
             :practicalities => {:except => [:id,:poi_id]},
             :reviews => {:except => [:id,:poi_id]}, 
-            :telephones => {:except => [:id,:poi_id]},
-            :properties =>{:only => [:click_to_dial, :text]}}
+            :properties => {:except => [:id,:created_at,:poi_id]},
+            :telephones =>{:only => [:click_to_dial, :text]}}
         )
       end
       poi_jsons << poi_json

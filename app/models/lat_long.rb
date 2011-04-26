@@ -43,8 +43,6 @@ class LatLong
     distance = distance.to_f/1000.0
     ne = lat_long.move 45, distance
     sw = lat_long.move 225, distance
-    puts ne
-    puts sw
     [ne.lat, sw.lat, ne.long,sw.long]
   end
 end
