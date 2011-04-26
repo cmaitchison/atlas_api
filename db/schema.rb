@@ -10,7 +10,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110424170014) do
+ActiveRecord::Schema.define(:version => 20110426121106) do
+
+  create_table "addresses", :force => true do |t|
+    t.integer "poi_id"
+    t.string  "street"
+    t.string  "locality"
+    t.string  "postcode"
+    t.string  "extras"
+    t.string  "region"
+    t.string  "neighbourhood"
+  end
+
+  add_index "addresses", ["poi_id"], :name => "index_addresses_on_poi_id"
 
   create_table "places", :force => true do |t|
     t.string  "name"
@@ -25,6 +37,8 @@ ActiveRecord::Schema.define(:version => 20110424170014) do
     t.string  "searchable_name"
     t.string  "ancestry_ids"
     t.string  "ancestry_names"
+    t.string  "calling_code",    :limit => 3
+    t.string  "dcm_page_name"
   end
 
   add_index "places", ["ancestry_ids"], :name => "index_places_on_ancestry_ids"
@@ -48,24 +62,10 @@ ActiveRecord::Schema.define(:version => 20110424170014) do
     t.string   "name"
     t.string   "alt_name"
     t.string   "subtype"
-    t.string   "telephone"
-    t.string   "email"
-    t.string   "url"
-    t.text     "review_summary"
-    t.text     "review_detail"
-    t.text     "hours"
-    t.text     "price_string"
-    t.string   "price_range"
-    t.string   "address_street"
-    t.string   "address_locality"
-    t.string   "address_postcode"
-    t.string   "address_extras"
-    t.string   "address_region"
-    t.string   "address_neighbourhood"
     t.datetime "verified_on"
     t.string   "searchable_name"
     t.string   "place_ancestry_ids"
-    t.string   "place_ancestry_names",  :limit => 512
+    t.string   "place_ancestry_names", :limit => 512
   end
 
   add_index "pois", ["ethyl_id"], :name => "index_pois_on_ethyl_id"
@@ -73,8 +73,49 @@ ActiveRecord::Schema.define(:version => 20110424170014) do
   add_index "pois", ["latitude"], :name => "index_pois_on_latitude"
   add_index "pois", ["longitude"], :name => "index_pois_on_longitude"
   add_index "pois", ["place_ancestry_ids"], :name => "index_pois_on_place_ancestry_ids"
-  add_index "pois", ["place_ancestry_names"], :name => "index_pois_on_place_ancestry_names"
+  add_index "pois", ["place_ancestry_names", "id"], :name => "index_pois_on_place_ancestry_names"
   add_index "pois", ["searchable_name"], :name => "index_pois_on_searchable_name"
   add_index "pois", ["type"], :name => "index_pois_on_type"
+
+  create_table "practicalities", :force => true do |t|
+    t.integer "poi_id"
+    t.string  "email"
+    t.string  "url"
+    t.text    "hours"
+    t.text    "price_string"
+    t.string  "price_range"
+  end
+
+  add_index "practicalities", ["poi_id"], :name => "index_practicalities_on_poi_id"
+
+  create_table "properties", :force => true do |t|
+    t.string   "key",        :limit => 50,  :null => false
+    t.string   "value",      :limit => 200
+    t.datetime "created_at"
+    t.integer  "poi_id",                    :null => false
+  end
+
+  add_index "properties", ["poi_id"], :name => "index_properties_on_poi_id"
+
+  create_table "reviews", :force => true do |t|
+    t.integer "poi_id"
+    t.text    "summary"
+    t.text    "detailed"
+  end
+
+  add_index "reviews", ["poi_id"], :name => "index_reviews_on_poi_id"
+
+  create_table "telephones", :force => true do |t|
+    t.string   "area_code",         :limit => 10
+    t.string   "number",                           :null => false
+    t.string   "text",              :limit => 100
+    t.datetime "created_at"
+    t.string   "searchable_number", :limit => 100
+    t.integer  "poi_id",                           :null => false
+    t.string   "click_to_dial"
+    t.string   "country_code"
+  end
+
+  add_index "telephones", ["poi_id"], :name => "index_telephones_on_poi_id"
 
 end
