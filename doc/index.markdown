@@ -9,50 +9,41 @@ What can it do?
 **Give me all restaurants within 1km of Southbank**  
 [pois?where[close_to]=-37.821836,144.960029,1000&where[type]=eat](/pois?where[close_to]=-37.821836,144.960029,1000&where[type]=eat)  
 Atlas: Not implemented  
-FastAtlas: 1-2 seconds
+FastAtlas: ~10ms
 
 **Give me just the name and id of all Italy POIs that aren't geocoded**  
 [pois?select=name&where[place]=359845&where[geocoded]=false](/pois?select=name&where[place]=359845&where[geocoded]=false)  
 Atlas: Not implemented  
-FastAtlas: 1-2 seconds
+FastAtlas: ~200ms
 
 **Give me all places that contain the lat long of Eiffel Tower**  
 [places?where[contains_point]=48.8582493546056,2.294511795044](/places?where[contains_point]=48.8582493546056,2.2945117950440)  
 Atlas: Not implemented  
-FastAtlas: 1 second
+FastAtlas: ~10ms
 
 **Give me 1000 places**  
 [places?limit=1000](/places?limit=1000)  
 Atlas: 30-40 seconds  
-FastAtlas: 1-2 seconds
+FastAtlas: ~150ms 
   
 **Give me 1000 POIs in Australia**  
 [pois?where[place]=362249&limit=1000](/pois?where[place]=362249&limit=1000)  
 Atlas: 30-40 seconds  
-FastAtlas: 1-2 seconds
+FastAtlas: ~150ms 
 
-**Give me only the names and ids of ALL the POIs in Australia**  
-[pois?select=name&where[place]=362249&limit=12000](/pois?select=name&where[place]=362249&limit=12000)  
-Atlas: 12 pages of 1000 POIs takes around 6-8 minutes  
-FastAtlas: 2-3 seconds
-   
 **Give me all POIs in a bounding box**  
 [pois?where[contained_in]=38.079598,37.479598,-122.120143,-122.720143](/pois?where[contained_in]=38.079598,37.479598,-122.120143,-122.720143)  
 Atlas: 20-25 seconds  
-FastAtlas: 1-2 seconds
+FastAtlas: ~150ms 
 
-**Get 1000 POIs in a place, with reviews**  
-[pois?where[place]=362494&limit=1000&detailed=true](/pois?where[place]=362494&limit=1000&detailed=true)  
-Atlas: 40-50 seconds  
-FastAtlas: 3-5 seconds
 
 Why is it faster?
 ===============
 * It is implemented only in JSON. XML should be considered for deprecation in the existing API.
-* It is implemented in Ruby 1.9.2 and Rails 3.0.6, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2
+* It is implemented in Ruby 1.9.2 and Rails 3.0.7, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2
 * The database it uses for its backend is a denormalized version of the existing Atlas data.  
 * The JSON returned has all whitespace removed, making it less human readable but much smaller and faster.
-* It strives to be as simple as possible. There are two tables (pois & places), two controllers (pois & places), and 3 model classes (Poi, Place and LatLong for the funky LatLong math). Along with this page, that's it.
+* It strives to be as simple as possible.
 
 Extra Features/Changes
 ======================

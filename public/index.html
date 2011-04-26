@@ -7,51 +7,41 @@
 <p><strong>Give me all restaurants within 1km of Southbank</strong><br/>
 <a href="/pois?where[close_to]=-37.821836,144.960029,1000&amp;where[type]=eat">pois?where[close_to]=-37.821836,144.960029,1000&amp;where[type]=eat</a><br/>
 Atlas: Not implemented<br/>
-FastAtlas: 1-2 seconds</p>
+FastAtlas: ~10ms</p>
 
 <p><strong>Give me just the name and id of all Italy POIs that aren't geocoded</strong><br/>
 <a href="/pois?select=name&amp;where[place]=359845&amp;where[geocoded]=false">pois?select=name&amp;where[place]=359845&amp;where[geocoded]=false</a><br/>
 Atlas: Not implemented<br/>
-FastAtlas: 1-2 seconds</p>
+FastAtlas: ~200ms</p>
 
 <p><strong>Give me all places that contain the lat long of Eiffel Tower</strong><br/>
 <a href="/places?where[contains_point]=48.8582493546056,2.2945117950440">places?where[contains_point]=48.8582493546056,2.294511795044</a><br/>
 Atlas: Not implemented<br/>
-FastAtlas: 1 second</p>
+FastAtlas: ~10ms</p>
 
 <p><strong>Give me 1000 places</strong><br/>
 <a href="/places?limit=1000">places?limit=1000</a><br/>
 Atlas: 30-40 seconds<br/>
-FastAtlas: 1-2 seconds</p>
+FastAtlas: ~150ms</p>
 
 <p><strong>Give me 1000 POIs in Australia</strong><br/>
 <a href="/pois?where[place]=362249&amp;limit=1000">pois?where[place]=362249&amp;limit=1000</a><br/>
 Atlas: 30-40 seconds<br/>
-FastAtlas: 1-2 seconds</p>
-
-<p><strong>Give me only the names and ids of ALL the POIs in Australia</strong><br/>
-<a href="/pois?select=name&amp;where[place]=362249&amp;limit=12000">pois?select=name&amp;where[place]=362249&amp;limit=12000</a><br/>
-Atlas: 12 pages of 1000 POIs takes around 6-8 minutes<br/>
-FastAtlas: 2-3 seconds</p>
+FastAtlas: ~150ms</p>
 
 <p><strong>Give me all POIs in a bounding box</strong><br/>
 <a href="/pois?where[contained_in]=38.079598,37.479598,-122.120143,-122.720143">pois?where[contained_in]=38.079598,37.479598,-122.120143,-122.720143</a><br/>
 Atlas: 20-25 seconds<br/>
-FastAtlas: 1-2 seconds</p>
-
-<p><strong>Get 1000 POIs in a place, with reviews</strong><br/>
-<a href="/pois?where[place]=362494&amp;limit=1000&amp;detailed=true">pois?where[place]=362494&amp;limit=1000&amp;detailed=true</a><br/>
-Atlas: 40-50 seconds<br/>
-FastAtlas: 3-5 seconds</p>
+FastAtlas: ~150ms</p>
 
 <h1>Why is it faster?</h1>
 
 <ul>
 <li>It is implemented only in JSON. XML should be considered for deprecation in the existing API.</li>
-<li>It is implemented in Ruby 1.9.2 and Rails 3.0.6, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2</li>
+<li>It is implemented in Ruby 1.9.2 and Rails 3.0.7, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2</li>
 <li>The database it uses for its backend is a denormalized version of the existing Atlas data.</li>
 <li>The JSON returned has all whitespace removed, making it less human readable but much smaller and faster.</li>
-<li>It strives to be as simple as possible. There are two tables (pois &amp; places), two controllers (pois &amp; places), and 3 model classes (Poi, Place and LatLong for the funky LatLong math). Along with this page, that's it.</li>
+<li>It strives to be as simple as possible.</li>
 </ul>
 
 
