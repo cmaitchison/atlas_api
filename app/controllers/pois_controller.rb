@@ -1,7 +1,6 @@
 class PoisController < ApplicationController
   
   def index
-    @timer = Time.now
     build_pois_scope
     render :json => json_response
   end
