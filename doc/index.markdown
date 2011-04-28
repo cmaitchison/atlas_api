@@ -1,8 +1,9 @@
 The FastAtlas API
 ==================
 
-This is an implementation of the Atlas API that is tuned for read performance. If it was hosted on local servers, nearly all responses would be sub-second.  It is currently hosted on Heroku, meaning most responses are served in 1-2 seconds.
+This is an implementation of the Atlas API that is tuned for read performance.
 
+If you want to see the output of the API in a human readable format, use Firefox and install this plugin: [JSONView](https://addons.mozilla.org/en-us/firefox/addon/jsonview/)
 What can it do?
 ==================================
 
@@ -38,12 +39,13 @@ FastAtlas: ~150ms
 
 
 Why is it faster?
-===============
+=================
+* It uses a FusionIO disk to host the database and act as a disk cache, which is capable of read/write speeds 10x faster than normal SAN disks.
 * It is implemented only in JSON. XML should be considered for deprecation in the existing API.
 * It is implemented in Ruby 1.9.2 and Rails 3.0.7, taking advantages of the performance boosts over Ruby 1.8.7 and Rails 2.3.2
 * The database it uses for its backend is a denormalized version of the existing Atlas data.  
 * The JSON returned has all whitespace removed, making it less human readable but much smaller and faster.
-* It strives to be as simple as possible.
+* It does one thing - serves data.
 
 Extra Features/Changes
 ======================
@@ -59,7 +61,7 @@ Missing Features
 * No posting data.  The data is read-only.
 * No support for multiple languages
 * No versioning (draft/published).  The latest version (in its default language) of each POI/Place in Atlas was used to seed the database.
-* No tests. No good error handling.  Bit of a hack really.
+* No tests. No good error handling.  Just a spike.
 
 Places API
 ==========
