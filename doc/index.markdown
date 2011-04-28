@@ -3,7 +3,10 @@ The FastAtlas API
 
 This is an implementation of the Atlas API that is tuned for read performance.
 
-If you want to see the output of the API in a human readable format, use Firefox and install this plugin: [JSONView](https://addons.mozilla.org/en-us/firefox/addon/jsonview/)
+If you want to see the output of the API in a human readable format, use Firefox and install this plugin: [JSONView](https://addons.mozilla.org/en-us/firefox/addon/jsonview/)  
+Using the plugin will actually add a second or two to the response time as the browser makes the response look pretty.  The raw JSON is much faster and is what an actual API client would use.
+
+
 What can it do?
 ==================================
 
