@@ -10,7 +10,9 @@ LpApi::Application.configure do
   config.log_level = :info
 
   # Use a different cache store in production
-  config.cache_store = :file_store, "/tmp/cache"
+  #config.cache_store = :file_store, "/tmp/cache"
+  config.cache_store = :dalli_store, '192.168.246.134',
+       { :namespace => "DEV_WITH_CACHING" }
 
   config.serve_static_assets = true
 
